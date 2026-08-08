@@ -45,13 +45,13 @@ class S {
       'freeOf': '%d free of %d',
       'freeHaveFun': '%d free pages - have fun!',
       'allUnlocked': 'All %d pages unlocked!',
-      'unlockTitle': 'Unlock all 512 dino pages',
+      'unlockTitle': 'Unlock all 520 dino pages',
       'unlockedTitle': 'Everything is unlocked \u2714',
       'privacyTitle': 'Privacy',
       'diagTitle': 'Store diagnostics',
       'whatIs': 'What is %d \u00d7 %d?',
       'benefits': '\u2022 One-time purchase - no subscription\n'
-          '\u2022 512 unique coloring pages, 8 categories\n'
+          '\u2022 520 unique coloring pages, 10 categories\n'
           '\u2022 No ads, no internet needed, ever\n'
           '\u2022 Works for the whole family',
     },
@@ -66,13 +66,13 @@ class S {
       'freeOf': '%d von %d kostenlos',
       'freeHaveFun': '%d kostenlose Seiten - viel Spaß!',
       'allUnlocked': 'Alle %d Seiten freigeschaltet!',
-      'unlockTitle': 'Alle 512 Dino-Seiten freischalten',
+      'unlockTitle': 'Alle 520 Dino-Seiten freischalten',
       'unlockedTitle': 'Alles freigeschaltet \u2714',
       'privacyTitle': 'Datenschutz',
       'diagTitle': 'Store-Diagnose',
       'whatIs': 'Was ist %d \u00d7 %d?',
       'benefits': '\u2022 Einmaliger Kauf - kein Abo\n'
-          '\u2022 512 einzigartige Ausmalbilder, 8 Kategorien\n'
+          '\u2022 520 einzigartige Ausmalbilder, 10 Kategorien\n'
           '\u2022 Keine Werbung, kein Internet nötig\n'
           '\u2022 Für die ganze Familie',
     },
@@ -87,13 +87,13 @@ class S {
       'freeOf': '%d gratuites sur %d',
       'freeHaveFun': '%d pages gratuites - amuse-toi bien !',
       'allUnlocked': 'Les %d pages sont débloquées !',
-      'unlockTitle': 'Débloquer les 512 pages de dinos',
+      'unlockTitle': 'Débloquer les 520 pages de dinos',
       'unlockedTitle': 'Tout est débloqué \u2714',
       'privacyTitle': 'Confidentialité',
       'diagTitle': 'Diagnostic du store',
       'whatIs': 'Combien font %d \u00d7 %d ?',
       'benefits': "\u2022 Achat unique - pas d'abonnement\n"
-          '\u2022 512 pages à colorier uniques, 8 catégories\n'
+          '\u2022 520 pages à colorier uniques, 10 catégories\n'
           '\u2022 Sans pub, sans Internet\n'
           '\u2022 Pour toute la famille',
     },
@@ -108,13 +108,13 @@ class S {
       'freeOf': '%d gratis de %d',
       'freeHaveFun': '%d páginas gratis - ¡diviértete!',
       'allUnlocked': '¡Las %d páginas desbloqueadas!',
-      'unlockTitle': 'Desbloquear las 512 páginas de dinos',
+      'unlockTitle': 'Desbloquear las 520 páginas de dinos',
       'unlockedTitle': 'Todo desbloqueado \u2714',
       'privacyTitle': 'Privacidad',
       'diagTitle': 'Diagnóstico de la tienda',
       'whatIs': '¿Cuánto es %d \u00d7 %d?',
       'benefits': '\u2022 Compra única - sin suscripción\n'
-          '\u2022 512 páginas únicas para colorear, 8 categorías\n'
+          '\u2022 520 páginas únicas para colorear, 10 categorías\n'
           '\u2022 Sin anuncios, sin Internet\n'
           '\u2022 Para toda la familia',
     },
@@ -129,13 +129,13 @@ class S {
       'freeOf': '%d gratis su %d',
       'freeHaveFun': '%d pagine gratis - buon divertimento!',
       'allUnlocked': 'Tutte le %d pagine sbloccate!',
-      'unlockTitle': 'Sblocca tutte le 512 pagine di dinosauri',
+      'unlockTitle': 'Sblocca tutte le 520 pagine di dinosauri',
       'unlockedTitle': 'Tutto sbloccato \u2714',
       'privacyTitle': 'Privacy',
       'diagTitle': 'Diagnostica dello store',
       'whatIs': 'Quanto fa %d \u00d7 %d?',
       'benefits': '\u2022 Acquisto unico - nessun abbonamento\n'
-          '\u2022 512 pagine da colorare uniche, 8 categorie\n'
+          '\u2022 520 pagine da colorare uniche, 10 categorie\n'
           '\u2022 Niente pubblicità, niente Internet\n'
           '\u2022 Per tutta la famiglia',
     },
@@ -150,13 +150,13 @@ class S {
       'freeOf': '%d枚中%d枚無料',
       'freeHaveFun': '%dページ無料 - 楽しんでね！',
       'allUnlocked': '%dページすべて解放済み！',
-      'unlockTitle': '512枚の恐竜ページをすべてアンロック',
+      'unlockTitle': '520枚の恐竜ページをすべてアンロック',
       'unlockedTitle': 'すべて解放済み \u2714',
       'privacyTitle': 'プライバシー',
       'diagTitle': 'ストア診断',
       'whatIs': '%d \u00d7 %d は？',
       'benefits': '\u2022 買い切り - サブスクなし\n'
-          '\u2022 512枚のユニークなぬりえ、8カテゴリー\n'
+          '\u2022 520枚のユニークなぬりえ、10カテゴリー\n'
           '\u2022 広告なし、インターネット不要\n'
           '\u2022 家族みんなで遊べます',
     },
@@ -171,13 +171,13 @@ class S {
       'freeOf': '%d grátis de %d',
       'freeHaveFun': '%d páginas grátis - divirta-se!',
       'allUnlocked': 'Todas as %d páginas desbloqueadas!',
-      'unlockTitle': 'Desbloquear as 512 páginas de dinos',
+      'unlockTitle': 'Desbloquear as 520 páginas de dinos',
       'unlockedTitle': 'Tudo desbloqueado \u2714',
       'privacyTitle': 'Privacidade',
       'diagTitle': 'Diagnóstico da loja',
       'whatIs': 'Quanto é %d \u00d7 %d?',
       'benefits': '\u2022 Compra única - sem assinatura\n'
-          '\u2022 512 páginas exclusivas para colorir, 8 categorias\n'
+          '\u2022 520 páginas exclusivas para colorir, 10 categorias\n'
           '\u2022 Sem anúncios, sem Internet\n'
           '\u2022 Para toda a família',
     },

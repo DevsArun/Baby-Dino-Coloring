@@ -3,7 +3,7 @@
 **Tap, color, roar! Easy coloring for toddlers.**
 
 - Package: `com.itschool.babydinocoloring` · Version: `1.0.1+2`
-- 512 unique dino coloring pages, 8 categories, **104 free**
+- 520 unique dino coloring pages, 10 categories, **104 free**
 - One-time IAP `full_library_unlock` ($3.99) unlocks everything
 - Fully offline · zero permissions · no ads · no analytics · COPPA-friendly
 - **Devices:** ALL Amazon devices eligible — har Fire tablet (Fire OS 5+,
@@ -49,7 +49,7 @@
 ## Structure
 
 - `lib/` — Flutter app (coloring engine, IAP bridge, parental gate, 7-language UI)
-- `assets/pages/pages.json` — 512 generated coloring pages (proper names on every page)
+- `assets/pages/pages.json` — 520 generated coloring pages (proper names on every page)
 - `android-overlay/` — CI me generated android/ shell ke upar copy hota hai
 - `ci/` — android prep + signature verification scripts
 - `.github/workflows/build.yml` — CI pipeline

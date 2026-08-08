@@ -15,13 +15,15 @@ const List<int> kCategoryColors = [
 ];
 
 const Map<String, String> kCategoryEmoji = {
-  'trex': '\u{1F996}',
-  'stego': '\u{1F995}',
-  'trike': '\u{1F98F}',
-  'brachio': '\u{1F995}',
-  'ptero': '\u{1F985}',
-  'swimmer': '\u{1F30A}',
-  'baby': '\u{1F423}',
+  'predators': '\u{1F996}',
+  'raptors': '\u{1FAB6}',
+  'horned': '\u{1F98F}',
+  'longnecks': '\u{1F995}',
+  'armored': '\u{1F6E1}\u{FE0F}',
+  'flyers': '\u{1F985}',
+  'sea': '\u{1F30A}',
+  'crested': '\u{1F986}',
+  'babies': '\u{1F423}',
   'party': '\u{1F389}',
 };
 

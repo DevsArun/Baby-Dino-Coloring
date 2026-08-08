@@ -10,7 +10,7 @@ void main() {
 
     expect(catalog.pages.length, greaterThanOrEqualTo(500));
     expect(catalog.freeCount, greaterThanOrEqualTo(100));
-    expect(catalog.categories.length, 8);
+    expect(catalog.categories.length, 10);
 
     final ids = catalog.pages.map((p) => p.id).toSet();
     expect(ids.length, catalog.pages.length,
@@ -26,7 +26,7 @@ void main() {
 
     for (final cat in catalog.categories) {
       final pages = catalog.pagesFor(cat.id);
-      expect(pages.length, greaterThanOrEqualTo(60));
+      expect(pages.length, greaterThanOrEqualTo(50));
       expect(pages.where((p) => p.free).length, greaterThanOrEqualTo(10),
           reason: 'every category needs generous free samples');
     }

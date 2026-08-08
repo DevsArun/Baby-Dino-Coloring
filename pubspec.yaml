@@ -1,7 +1,7 @@
 name: baby_dino_coloring
 description: "Baby Dino Coloring - Tap, color, roar! Easy coloring for toddlers."
 publish_to: "none"
-version: 1.0.5+6
+version: 1.1.0+7
 
 environment:
   sdk: ^3.5.0
