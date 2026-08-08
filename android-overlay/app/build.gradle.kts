@@ -1,6 +1,8 @@
 // Imports MUST stay above the plugins block (Kotlin DSL rule).
+import com.android.build.api.dsl.ApplicationExtension
 import java.io.FileInputStream
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
@@ -10,27 +12,27 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-android {
+// Keystore config (CI writes key.properties + release.jks from secrets).
+val keystorePropertiesFile = rootProject.file("key.properties")
+val keystoreProperties = Properties()
+val hasKeystore = keystorePropertiesFile.exists()
+if (hasKeystore) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+// New compilerOptions DSL (required by the modern Kotlin Gradle plugin).
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+
+// ApplicationExtension works on AGP 8 AND AGP 9 (old BaseAppModuleExtension
+// accessor is deprecated-as-error in AGP 9 with android.newDsl=true).
+configure<ApplicationExtension> {
     namespace = "com.itschool.babydinocoloring"
     compileSdk = 36
     ndkVersion = "28.2.13676358"
-
-    // All vals INSIDE the android {} block (learned the hard way).
-    val keystorePropertiesFile = rootProject.file("key.properties")
-    val keystoreProperties = Properties()
-    val hasKeystore = keystorePropertiesFile.exists()
-    if (hasKeystore) {
-        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
 
     defaultConfig {
         applicationId = "com.itschool.babydinocoloring"
@@ -38,6 +40,11 @@ android {
         targetSdk = 34
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     signingConfigs {
