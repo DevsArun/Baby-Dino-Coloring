@@ -39,7 +39,7 @@ class _ColoringScreenState extends State<ColoringScreen> {
   /// The colored sample (top) that kids copy onto the blank page (bottom).
   late final Map<String, int> _guide = {
     for (final r in widget.page.regions)
-      if (r.isFillable && r.gc != null) r.id: colorFromHex(r.gc!).value,
+      if (r.isFillable && r.gc != null) r.id: colorFromHex(r.gc!).toARGB32(),
   };
 
   @override
