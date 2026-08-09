@@ -74,10 +74,19 @@ class Page:
         self.category = category
         self.regions = []
         self._n = 0
+        self._gc = None
 
-    def fill(self, d):
+    def use(self, color):
+        """Set the guide color for the fill() regions that follow."""
+        self._gc = color
+
+    def fill(self, d, gc=None):
         self._n += 1
-        self.regions.append({"id": f"r{self._n}", "d": d, "kind": "fill"})
+        r = {"id": f"r{self._n}", "d": d, "kind": "fill"}
+        color = gc or self._gc
+        if color:
+            r["gc"] = color
+        self.regions.append(r)
 
     def fixed(self, d, color="#222222", stroke=False, sw=7):
         self._n += 1
@@ -91,7 +100,7 @@ class Page:
 # ---------- shared scenery ----------
 
 def sky(pg):
-    pg.fill(f"M 0 0 L {W} 0 L {W} {H} L 0 {H} Z")
+    pg.fill(f"M 0 0 L {W} 0 L {W} {H} L 0 {H} Z", gc="#BFE7F5")
 
 
 def ground(pg, rng, y=780):
@@ -106,13 +115,13 @@ def ground(pg, rng, y=780):
     for i in range(2, len(pts) - 1, 2):
         d += f" Q {f(pts[i][0])} {f(pts[i][1])} {f(pts[i+1][0])} {f(pts[i+1][1])}"
     d += f" L {W} {H} Z"
-    pg.fill(d)
+    pg.fill(d, gc="#A5D6A7")
 
 
 def sun(pg, rng, cx=None, cy=170):
-    cx = cx if cx is not None else rng.choice([150, 870])
+    cx = cx if cx is not None else rng.choice([160, 864])
     r = rng.randint(60, 85)
-    pg.fill(ellipse(cx, cy, r, r))
+    pg.fill(ellipse(cx, cy, r, r), gc="#FFD54F")
     n = rng.choice([8, 10, 12])
     for i in range(n):
         a = 2 * math.pi * i / n
@@ -130,49 +139,50 @@ def cloud(pg, rng, cx, cy):
         f" C {f(cx+35*s)} {f(cy-70*s)} {f(cx+90*s)} {f(cy-45*s)} {f(cx+85*s)} {f(cy-8*s)}"
         f" C {f(cx+130*s)} {f(cy-5*s)} {f(cx+125*s)} {f(cy+30*s)} {f(cx+85*s)} {f(cy+30*s)} Z"
     )
-    pg.fill(d)
+    pg.fill(d, gc="#FFFFFF")
 
 
-def volcano(pg, rng, cx=820, base=800):
-    w, h = rng.randint(180, 240), rng.randint(220, 300)
+def volcano(pg, rng, cx=800, base=800):
+    w, h = rng.randint(170, 210), rng.randint(220, 300)
     pg.fill(
         f"M {f(cx-w)} {f(base)} Q {f(cx-w*0.35)} {f(base-h*0.75)} {f(cx-w*0.28)} {f(base-h)}"
-        f" L {f(cx+w*0.28)} {f(base-h)} Q {f(cx+w*0.35)} {f(base-h*0.75)} {f(cx+w)} {f(base)} Z"
+        f" L {f(cx+w*0.28)} {f(base-h)} Q {f(cx+w*0.35)} {f(base-h*0.75)} {f(cx+w)} {f(base)} Z",
+        gc="#A1887F",
     )
-    pg.fill(ellipse(cx, base - h - 55, 70, 42))
+    pg.fill(ellipse(cx, base - h - 55, 70, 42), gc="#E0E0E0")
 
 
 def tree(pg, rng, cx, base):
     th = rng.randint(120, 190)
     tw = rng.randint(22, 32)
-    pg.fill(f"M {f(cx-tw)} {f(base)} L {f(cx-tw*0.6)} {f(base-th)} L {f(cx+tw*0.6)} {f(base-th)} L {f(cx+tw)} {f(base)} Z")
-    pg.fill(ellipse(cx, base - th - 60, 85 + rng.randint(-10, 20), 70))
+    pg.fill(f"M {f(cx-tw)} {f(base)} L {f(cx-tw*0.6)} {f(base-th)} L {f(cx+tw*0.6)} {f(base-th)} L {f(cx+tw)} {f(base)} Z", gc="#8D6E63")
+    pg.fill(ellipse(cx, base - th - 60, 85 + rng.randint(-10, 20), 70), gc="#66BB6A")
 
 
 def flower(pg, rng, cx, cy):
     for i in range(5):
         a = 2 * math.pi * i / 5 - math.pi / 2
-        pg.fill(ellipse(cx + math.cos(a) * 24, cy + math.sin(a) * 24, 17, 17))
-    pg.fill(ellipse(cx, cy, 13, 13))
+        pg.fill(ellipse(cx + math.cos(a) * 24, cy + math.sin(a) * 24, 17, 17), gc="#F48FB1")
+    pg.fill(ellipse(cx, cy, 13, 13), gc="#FFEE58")
     pg.fixed(f"M {f(cx)} {f(cy+38)} L {f(cx)} {f(cy+85)}", stroke=True, sw=8)
 
 
 def butterfly(pg, rng, cx, cy):
-    pg.fill(ellipse(cx - 26, cy - 12, 26, 20, -0.4))
-    pg.fill(ellipse(cx + 26, cy - 12, 26, 20, 0.4))
-    pg.fill(ellipse(cx - 20, cy + 16, 18, 14, -0.3))
-    pg.fill(ellipse(cx + 20, cy + 16, 18, 14, 0.3))
+    pg.fill(ellipse(cx - 26, cy - 12, 26, 20, -0.4), gc="#CE93D8")
+    pg.fill(ellipse(cx + 26, cy - 12, 26, 20, 0.4), gc="#CE93D8")
+    pg.fill(ellipse(cx - 20, cy + 16, 18, 14, -0.3), gc="#FFCC80")
+    pg.fill(ellipse(cx + 20, cy + 16, 18, 14, 0.3), gc="#FFCC80")
     pg.fixed(ellipse(cx, cy, 7, 24), "#222222")
 
 
 def balloon(pg, rng, cx, cy):
-    pg.fill(ellipse(cx, cy, 55, 68))
+    pg.fill(ellipse(cx, cy, 55, 68), gc="#EF5350")
     pg.fixed(f"M {f(cx)} {f(cy+68)} Q {f(cx-18)} {f(cy+140)} {f(cx+8)} {f(cy+205)}", stroke=True, sw=6)
 
 
 def party_hat(pg, rng, cx, cy, s=1.0):
-    pg.fill(f"M {f(cx-52*s)} {f(cy)} L {f(cx)} {f(cy-115*s)} L {f(cx+52*s)} {f(cy)} Z")
-    pg.fill(ellipse(cx, cy - 115 * s, 20 * s, 20 * s))
+    pg.fill(f"M {f(cx-52*s)} {f(cy)} L {f(cx)} {f(cy-115*s)} L {f(cx+52*s)} {f(cy)} Z", gc="#AB47BC")
+    pg.fill(ellipse(cx, cy - 115 * s, 20 * s, 20 * s), gc="#FFEE58")
 
 
 def egg(pg, rng, cx, cy, s=1.0, cracked=False):
@@ -180,7 +190,8 @@ def egg(pg, rng, cx, cy, s=1.0, cracked=False):
         f"M {f(cx)} {f(cy-95*s)}"
         f" C {f(cx+58*s)} {f(cy-95*s)} {f(cx+72*s)} {f(cy-10*s)} {f(cx+70*s)} {f(cy+20*s)}"
         f" C {f(cx+66*s)} {f(cy+75*s)} {f(cx-66*s)} {f(cy+75*s)} {f(cx-70*s)} {f(cy+20*s)}"
-        f" C {f(cx-72*s)} {f(cy-10*s)} {f(cx-58*s)} {f(cy-95*s)} {f(cx)} {f(cy-95*s)} Z"
+        f" C {f(cx-72*s)} {f(cy-10*s)} {f(cx-58*s)} {f(cy-95*s)} {f(cx)} {f(cy-95*s)} Z",
+        gc="#FFF3E0",
     )
     if cracked:
         zz = f"M {f(cx-58*s)} {f(cy)} L {f(cx-30*s)} {f(cy-22*s)} L {f(cx-6*s)} {f(cy+4*s)} L {f(cx+22*s)} {f(cy-20*s)} L {f(cx+46*s)} {f(cy+2*s)} L {f(cx+60*s)} {f(cy-12*s)}"
@@ -193,7 +204,7 @@ def star(pg, rng, cx, cy, s=1.0):
         r = 34 * s if i % 2 == 0 else 14 * s
         a = math.pi * i / 5 - math.pi / 2
         pts.append((cx + math.cos(a) * r, cy + math.sin(a) * r))
-    pg.fill(poly(pts))
+    pg.fill(poly(pts), gc="#FFF176")
 
 
 def rainbow(pg, rng, cx=512, cy=340, r0=260):
@@ -205,11 +216,11 @@ def rainbow(pg, rng, cx=512, cy=340, r0=260):
             f" L {f(cx+r_in)} {f(cy)}"
             f" C {f(cx+r_in)} {f(cy-r_in*1.32)} {f(cx-r_in)} {f(cy-r_in*1.32)} {f(cx-r_in)} {f(cy)} Z"
         )
-        pg.fill(d)
+        pg.fill(d, gc=["#EF5350", "#FFB74D", "#FFF176"][i])
 
 
 def eye(pg, cx, cy, r=26, look=0.0):
-    pg.fill(ellipse(cx, cy, r, r))
+    pg.fill(ellipse(cx, cy, r, r), gc="#FFFFFF")
     pg.fixed(ellipse(cx + look * r * 0.3, cy, r * 0.42, r * 0.42), "#222222")
 
 
@@ -239,7 +250,7 @@ def legs(pg, rng, cx, cy, spread=120, lw=46, lh=130, n=2):
 
 
 def belly(pg, cx, cy, rx, ry):
-    pg.fill(ellipse(cx, cy, rx, ry))
+    pg.fill(ellipse(cx, cy, rx, ry), gc="#FFF8E1")
 
 
 def tail(pg, rng, x0, y0, flip=1, length=None, up=None):
@@ -261,8 +272,8 @@ def tail_strip(pg, x0, y0, flip, ln, thick):
     )
 
 
-def tri(pg, p1, p2, p3):
-    pg.fill(f"M {f(p1[0])} {f(p1[1])} L {f(p2[0])} {f(p2[1])} L {f(p3[0])} {f(p3[1])} Z")
+def tri(pg, p1, p2, p3, gc=None):
+    pg.fill(f"M {f(p1[0])} {f(p1[1])} L {f(p2[0])} {f(p2[1])} L {f(p3[0])} {f(p3[1])} Z", gc=gc)
 
 
 def teeth(pg, x, y, flip, n=3, s=22):
@@ -301,7 +312,7 @@ def sauropod(pg, rng, flip=1, cx=470, cy=620, body_s=1.0, neck_top=380, neck_dx=
     if whip:
         tipx = cx - flip * rx * 0.85 - flip * tail_len
         tipy = cy - tail_up - 30
-        tail_strip(pg, tipx, tipy, -flip, 120, 8)
+        tail_strip(pg, tipx, tipy, -flip, 60, 8)
     legs(pg, rng, cx, cy + ry * 0.55, spread=rx * 0.55, lw=50, lh=140, n=4)
     pg.fill(ellipse(cx, cy, rx, ry))
     belly(pg, cx, cy + 40, rx * 0.6, ry * 0.5)
@@ -329,14 +340,19 @@ def trike_base(pg, rng, flip=1, cx=520, cy=590, brow_horns=True, nose_horn=True,
     hx, hy = cx + flip * (rx * 0.9), cy - ry * 0.55
     pg.fill(ellipse(hx - flip * 30, hy - 30, 105, 120))  # frill
     if frill_spikes:
+        prev = pg._gc
+        pg.use("#FF8A65")
         for i in range(5):
             a = math.radians(150 - i * 30)  # spread over frill top
             sx = hx - flip * 30 - math.cos(a) * 0 - flip * 0
             sx = hx - flip * 30 + math.cos(a) * 108 * -flip
             sy = hy - 30 - math.sin(a) * 122
             tri(pg, (sx - 14, sy + 22), (sx, sy - 34), (sx + 14, sy + 22))
+        pg.use(prev)
     pg.fill(ellipse(hx + flip * 30, hy, 95, 75))  # head
     pg.fill(f"M {f(hx+flip*105)} {f(hy-10)} Q {f(hx+flip*165)} {f(hy+5)} {f(hx+flip*112)} {f(hy+42)} Z")  # beak
+    prev = pg._gc
+    pg.use("#D7CCC8")
     if brow_horns:
         tri(pg, (hx + flip * 10, hy - 62), (hx + flip * 28, hy - 150), (hx + flip * 52, hy - 58))
         tri(pg, (hx - flip * 36, hy - 66), (hx - flip * 20, hy - 148), (hx + flip * 2, hy - 60))
@@ -344,6 +360,7 @@ def trike_base(pg, rng, flip=1, cx=520, cy=590, brow_horns=True, nose_horn=True,
         tri(pg, (hx + flip * 74, hy + 28), (hx + flip * 118, hy + 14), (hx + flip * 82, hy + 52))
     if nose_boss:
         pg.fill(ellipse(hx + flip * 88, hy + 18, 30, 24))
+    pg.use(prev)
     face(pg, hx + flip * 30, hy, 95, 75, flip)
     return hx, hy
 
@@ -441,6 +458,8 @@ def spinosaurus(pg, rng, flip=1):
     hx, hy, rx, ry, cx, cy = predator_base(pg, rng, flip, arm=(70, 24), head_r=(100, 82))
     pg.fill(ellipse(hx + flip * 105, hy + 18, 95, 26))  # long croc snout
     # THE SAIL: membrane arc + tall spines along the back
+    prev = pg._gc
+    pg.use("#FFAB91")
     top_y = cy - ry + 10
     pg.fill(f"M {f(cx-rx*0.75)} {f(top_y)} Q {f(cx)} {f(top_y-195)} {f(cx+rx*0.75)} {f(top_y)} Z")
     n = 6
@@ -449,6 +468,7 @@ def spinosaurus(pg, rng, flip=1):
         px = cx - rx * 0.62 + t * rx * 1.24
         h = 120 + 70 * math.sin(math.pi * t)
         tri(pg, (px - 13, top_y + 4), (px, top_y - h), (px + 13, top_y + 4))
+    pg.use(prev)
     face(pg, hx, hy, 100, 82, flip)
     return hx, hy
 
@@ -526,11 +546,11 @@ def brachiosaurus(pg, rng, flip=1):
 
 
 def diplodocus(pg, rng, flip=1):
-    return sauropod(pg, rng, flip, neck_top=250, neck_dx=200, tail_len=330, tail_up=30, whip=True)
+    return sauropod(pg, rng, flip, neck_top=250, neck_dx=200, tail_len=230, tail_up=30, whip=True)
 
 
 def brontosaurus(pg, rng, flip=1):
-    return sauropod(pg, rng, flip, body_s=1.06, neck_top=340, neck_dx=110, tail_len=300)
+    return sauropod(pg, rng, flip, body_s=1.06, neck_top=340, neck_dx=110, tail_len=280)
 
 
 def apatosaurus(pg, rng, flip=1):
@@ -550,6 +570,8 @@ def stegosaurus(pg, rng, flip=1):
     legs(pg, rng, cx, cy + ry * 0.55, spread=rx * 0.55, lw=44, lh=135, n=4)
     pg.fill(ellipse(cx, cy, rx, ry))
     belly(pg, cx, cy + 40, rx * 0.6, ry * 0.5)
+    prev = pg._gc
+    pg.use("#FF8A65")
     n = rng.choice([5, 6])
     for i in range(n):
         t = i / (n - 1)
@@ -557,13 +579,14 @@ def stegosaurus(pg, rng, flip=1):
         py = cy - ry * math.sqrt(max(0.05, 1 - ((px - cx) / rx) ** 2)) + 6
         s = 55 + 28 * math.sin(math.pi * t)
         pg.fill(f"M {f(px-s*0.7)} {f(py)} Q {f(px)} {f(py-s*1.7)} {f(px+s*0.7)} {f(py)} Z")
+    pg.use(prev)
     hx, hy = cx + flip * (rx * 0.95), cy - 55
     pg.fill(ellipse(hx, hy, 88, 66))
     face(pg, hx, hy, 88, 66, flip)
     sx = cx - flip * (rx + 110)
     for k in range(2):  # tail spikes (thagomizer)
         tri(pg, (sx + k * 36 * flip, cy - 130), (sx + k * 36 * flip + 14, cy - 195),
-            (sx + k * 36 * flip + 28, cy - 130))
+            (sx + k * 36 * flip + 28, cy - 130), gc="#D7CCC8")
     return hx, hy
 
 
@@ -581,10 +604,10 @@ def kentrosaurus(pg, rng, flip=1):
         px = cx - rx * 0.75 + t * rx * 1.5
         py = cy - ry * math.sqrt(max(0.05, 1 - ((px - cx) / rx) ** 2)) + 8
         h = 95 + 45 * math.sin(math.pi * t)
-        tri(pg, (px - 12, py), (px - 2, py - h), (px + 10, py))
+        tri(pg, (px - 12, py), (px - 2, py - h), (px + 10, py), gc="#FF8A65")
     # shoulder spike
     tri(pg, (cx + flip * rx * 0.72, cy - 60), (cx + flip * (rx * 0.72 + 55), cy - 130),
-        (cx + flip * (rx * 0.72 + 30), cy - 45))
+        (cx + flip * (rx * 0.72 + 30), cy - 45), gc="#FF8A65")
     hx, hy = cx + flip * (rx * 0.95), cy - 55
     pg.fill(ellipse(hx, hy, 80, 60))
     face(pg, hx, hy, 80, 60, flip)
@@ -602,7 +625,7 @@ def anky_base(pg, rng, flip=1, club=True, head_bumps=False):
         for i in range(6):
             bx = cx - rx * 0.65 + i * (rx * 1.3 / 5)
             by = cy + oy - ry * 0.55 * math.sqrt(max(0.05, 1 - ((bx - cx) / rx) ** 2)) + row * 20
-            pg.fill(ellipse(bx, by, 20, 15))
+            pg.fill(ellipse(bx, by, 20, 15), gc="#A1887F")
     # tail + club
     tx = cx - flip * rx * 0.9
     pg.fill(
@@ -610,14 +633,14 @@ def anky_base(pg, rng, flip=1, club=True, head_bumps=False):
         f" L {f(tx-flip*190)} {f(cy+45)} Q {f(tx-flip*130)} {f(cy+30)} {f(tx)} {f(cy+30)} Z"
     )
     if club:
-        pg.fill(ellipse(tx - flip * 195, cy + 25, 55, 48))
+        pg.fill(ellipse(tx - flip * 195, cy + 25, 55, 48), gc="#6D4C41")
     hx, hy = cx + flip * (rx * 0.92), cy - 55
     pg.fill(ellipse(hx, hy, 72, 54))
     pg.fill(ellipse(hx + flip * 55, hy + 12, 40, 26))  # beak
-    tri(pg, (hx - flip * 60, hy - 20), (hx - flip * 95, hy - 55), (hx - flip * 45, hy - 45))  # rear horn
+    tri(pg, (hx - flip * 60, hy - 20), (hx - flip * 95, hy - 55), (hx - flip * 45, hy - 45), gc="#D7CCC8")  # rear horn
     if head_bumps:
-        pg.fill(ellipse(hx, hy - 50, 18, 13))
-        pg.fill(ellipse(hx + flip * 40, hy - 42, 15, 11))
+        pg.fill(ellipse(hx, hy - 50, 18, 13), gc="#A1887F")
+        pg.fill(ellipse(hx + flip * 40, hy - 42, 15, 11), gc="#A1887F")
     face(pg, hx, hy, 72, 54, flip)
     return hx, hy
 
@@ -644,11 +667,11 @@ def ptero_variant(pg, rng, flip=1, cx=512, cy=430, ww=None, head_r=(78, 64),
         if tail_vane:
             tx = cx - flip * (60 + tail_len)
             ty = cy + 120
-            pg.fill(poly([(tx, ty - 30), (tx - flip * 32, ty), (tx, ty + 30), (tx + flip * 32, ty)]))
+            pg.fill(poly([(tx, ty - 30), (tx - flip * 32, ty), (tx, ty + 30), (tx + flip * 32, ty)]), gc="#FFCC80")
     hx, hy = cx, cy - 110
     pg.fill(ellipse(hx, hy, head_r[0], head_r[1]))
     if crest:
-        pg.fill(f"M {f(hx-flip*20)} {f(hy-head_r[1]*0.8)} Q {f(hx-flip*130*crest)} {f(hy-110)} {f(hx-flip*60)} {f(hy-20)} Z")
+        pg.fill(f"M {f(hx-flip*20)} {f(hy-head_r[1]*0.8)} Q {f(hx-flip*130*crest)} {f(hy-110)} {f(hx-flip*60)} {f(hy-20)} Z", gc="#FFD54F")
     if beak == "long":
         pg.fill(f"M {f(hx+flip*60)} {f(hy-14)} L {f(hx+flip*175)} {f(hy+16)} L {f(hx+flip*62)} {f(hy+34)} Z")
     else:
@@ -795,7 +818,8 @@ def parasaurolophus(pg, rng, flip=1):
     # long backward tube crest
     pg.fill(
         f"M {f(hx-flip*20)} {f(hy-55)} Q {f(hx-flip*200)} {f(hy-120)} {f(hx-flip*260)} {f(hy-40)}"
-        f" L {f(hx-flip*235)} {f(hy-6)} Q {f(hx-flip*150)} {f(hy-58)} {f(hx-flip*8)} {f(hy-16)} Z"
+        f" L {f(hx-flip*235)} {f(hy-6)} Q {f(hx-flip*150)} {f(hy-58)} {f(hx-flip*8)} {f(hy-16)} Z",
+        gc="#FF8F00",
     )
     face(pg, hx, hy, 88, 70, flip)
     return hx, hy
@@ -803,14 +827,14 @@ def parasaurolophus(pg, rng, flip=1):
 
 def corythosaurus(pg, rng, flip=1):
     hx, hy = hadrosaur(pg, rng, flip)
-    pg.fill(ellipse(hx - flip * 10, hy - 58, 60, 46))  # helmet crest
+    pg.fill(ellipse(hx - flip * 10, hy - 58, 60, 46), gc="#AED581")  # helmet crest
     face(pg, hx, hy, 88, 70, flip)
     return hx, hy
 
 
 def edmontosaurus(pg, rng, flip=1):
     hx, hy = hadrosaur(pg, rng, flip)
-    pg.fill(ellipse(hx, hy - 64, 26, 16))  # small fleshy comb
+    pg.fill(ellipse(hx, hy - 64, 26, 16), gc="#EF9A9A")  # small fleshy comb
     face(pg, hx, hy, 88, 70, flip)
     return hx, hy
 
@@ -818,9 +842,9 @@ def edmontosaurus(pg, rng, flip=1):
 def pachycephalosaurus(pg, rng, flip=1):
     hx, hy = raptor_base(pg, rng, flip, s=1.25, tuft=False)
     # big dome on the head + bumps around it
-    pg.fill(ellipse(hx, hy - 60, 48, 40))
+    pg.fill(ellipse(hx, hy - 60, 48, 40), gc="#B39DDB")
     for a in (-0.5, 0.0, 0.5):
-        pg.fill(ellipse(hx + flip * 40 * math.sin(a + 0.5), hy - 60 - 30 * math.cos(a), 10, 8))
+        pg.fill(ellipse(hx + flip * 40 * math.sin(a + 0.5), hy - 60 - 30 * math.cos(a), 10, 8), gc="#B39DDB")
     return hx, hy
 
 
@@ -828,8 +852,8 @@ def dilophosaurus(pg, rng, flip=1):
     hx, hy, rx, ry, cx, cy = predator_base(pg, rng, flip, arm=(62, 20), head_r=(95, 80))
     pg.fill(ellipse(hx + flip * 75, hy + 20, 58, 36))
     # TWO thin parallel crests on the head
-    pg.fill(f"M {f(hx-flip*30)} {f(hy-62)} Q {f(hx+flip*10)} {f(hy-125)} {f(hx+flip*55)} {f(hy-118)} Q {f(hx+flip*12)} {f(hy-100)} {f(hx-flip*5)} {f(hy-56)} Z")
-    pg.fill(f"M {f(hx-flip*8)} {f(hy-58)} Q {f(hx+flip*30)} {f(hy-108)} {f(hx+flip*70)} {f(hy-100)} Q {f(hx+flip*32)} {f(hy-88)} {f(hx+flip*14)} {f(hy-50)} Z")
+    pg.fill(f"M {f(hx-flip*30)} {f(hy-62)} Q {f(hx+flip*10)} {f(hy-125)} {f(hx+flip*55)} {f(hy-118)} Q {f(hx+flip*12)} {f(hy-100)} {f(hx-flip*5)} {f(hy-56)} Z", gc="#FF7043")
+    pg.fill(f"M {f(hx-flip*8)} {f(hy-58)} Q {f(hx+flip*30)} {f(hy-108)} {f(hx+flip*70)} {f(hy-100)} Q {f(hx+flip*32)} {f(hy-88)} {f(hx+flip*14)} {f(hy-50)} Z", gc="#FF7043")
     face(pg, hx, hy, 95, 80, flip)
     return hx, hy
 
@@ -851,13 +875,13 @@ def baby(pg, rng, flip=1, feature="spikes"):
         tail(pg, rng, cx - flip * rx * 0.8, cy + 20, -flip, length=170, up=60)
         for k in (-1, 0, 1):
             px = hx + k * 46 * s
-            pg.fill(f"M {f(px-20*s)} {f(hy-100*s)} Q {f(px)} {f(hy-160*s)} {f(px+20*s)} {f(hy-100*s)} Z")
+            pg.fill(f"M {f(px-20*s)} {f(hy-100*s)} Q {f(px)} {f(hy-160*s)} {f(px+20*s)} {f(hy-100*s)} Z", gc="#FF8A65")
     elif feature == "frill":  # baby triceratops
         tail(pg, rng, cx - flip * rx * 0.8, cy + 20, -flip, length=150, up=50)
-        pg.fill(ellipse(hx, hy - 20, 150 * s, 130 * s))  # frill behind head
-        tri(pg, (hx - 40, hy - 120), (hx - 28, hy - 175), (hx - 12, hy - 118))
-        tri(pg, (hx + 40, hy - 120), (hx + 28, hy - 175), (hx + 12, hy - 118))
-        tri(pg, (hx - 10, hy + 30), (hx, hy + 62), (hx + 10, hy + 30))
+        pg.fill(ellipse(hx, hy - 20, 150 * s, 130 * s), gc="#D7CCC8")  # frill behind head
+        tri(pg, (hx - 40, hy - 120), (hx - 28, hy - 175), (hx - 12, hy - 118), gc="#BCAAA4")
+        tri(pg, (hx + 40, hy - 120), (hx + 28, hy - 175), (hx + 12, hy - 118), gc="#BCAAA4")
+        tri(pg, (hx - 10, hy + 30), (hx, hy + 62), (hx + 10, hy + 30), gc="#BCAAA4")
     elif feature == "plates":  # baby stegosaurus
         tail(pg, rng, cx - flip * rx * 0.8, cy + 20, -flip, length=150, up=45)
         for i in range(4):
@@ -865,7 +889,7 @@ def baby(pg, rng, flip=1, feature="spikes"):
             px = cx - rx * 0.7 + t * rx * 1.4
             py = cy - ry * math.sqrt(max(0.05, 1 - ((px - cx) / rx) ** 2)) + 6
             sz = 34 + 14 * math.sin(math.pi * t)
-            pg.fill(f"M {f(px-sz*0.7)} {f(py)} Q {f(px)} {f(py-sz*1.7)} {f(px+sz*0.7)} {f(py)} Z")
+            pg.fill(f"M {f(px-sz*0.7)} {f(py)} Q {f(px)} {f(py-sz*1.7)} {f(px+sz*0.7)} {f(py)} Z", gc="#FF8A65")
     elif feature == "longneck":  # baby long neck
         tail(pg, rng, cx - flip * rx * 0.8, cy + 20, -flip, length=150, up=50)
         # neck ring decoration
@@ -874,16 +898,17 @@ def baby(pg, rng, flip=1, feature="spikes"):
         tail(pg, rng, cx - flip * rx * 0.8, cy + 20, -flip, length=150, up=50)
         pg.fill(
             f"M {f(hx-flip*15)} {f(hy-95)} Q {f(hx-flip*120)} {f(hy-150)} {f(hx-flip*165)} {f(hy-95)}"
-            f" L {f(hx-flip*140)} {f(hy-60)} Q {f(hx-flip*85)} {f(hy-95)} {f(hx+flip*10)} {f(hy-60)} Z"
+            f" L {f(hx-flip*140)} {f(hy-60)} Q {f(hx-flip*85)} {f(hy-95)} {f(hx+flip*10)} {f(hy-60)} Z",
+            gc="#FF8F00",
         )
     elif feature == "club":  # baby ankylosaurus
         tail(pg, rng, cx - flip * rx * 0.8, cy + 20, -flip, length=140, up=30)
         tx = cx - flip * rx * 0.8 - flip * 145
-        pg.fill(ellipse(tx, cy - 25, 42, 36))  # tail club
+        pg.fill(ellipse(tx, cy - 25, 42, 36), gc="#8D6E63")  # tail club
         for i in range(3):
             px = cx - rx * 0.5 + i * rx * 0.5
             py = cy - ry * 0.9
-            pg.fill(ellipse(px, py, 15, 11))
+            pg.fill(ellipse(px, py, 15, 11), gc="#A1887F")
     return hx, hy
 
 
@@ -961,6 +986,30 @@ SPECIES_NAME = {
     "baby_para": "Baby Parasaurolophus", "baby_anky": "Baby Ankylosaurus",
 }
 
+# Guide body color per species (for the colored sample kids copy).
+SPECIES_COLOR = {
+    "trex": "#66BB6A", "allosaurus": "#9575CD", "carnotaurus": "#EF5350",
+    "ceratosaurus": "#FF8A65", "baryonyx": "#4DB6AC", "spinosaurus": "#42A5F5",
+    "velociraptor": "#FFA726", "deinonychus": "#EC407A", "gallimimus": "#FFEE58",
+    "compsognathus": "#AED581", "oviraptor": "#AB47BC", "ornithomimus": "#80DEEA",
+    "triceratops": "#8D6E63", "styracosaurus": "#FF7043",
+    "pachyrhinosaurus": "#90A4AE", "protoceratops": "#DCE775",
+    "brachiosaurus": "#26A69A", "diplodocus": "#9CCC65",
+    "brontosaurus": "#7986CB", "apatosaurus": "#81C784",
+    "mamenchisaurus": "#4FC3F7", "stegosaurus": "#FF9800",
+    "kentrosaurus": "#7CB342", "ankylosaurus": "#8D6E63",
+    "euoplocephalus": "#A1887F", "pteranodon": "#F06292",
+    "quetzalcoatlus": "#9575CD", "rhamphorhynchus": "#4DD0E1",
+    "archaeopteryx": "#FF8A65", "dimorphodon": "#7986CB",
+    "plesiosaurus": "#4FC3F7", "mosasaurus": "#78909C",
+    "ichthyosaurus": "#29B6F6", "elasmosaurus": "#26C6DA",
+    "parasaurolophus": "#FFB300", "corythosaurus": "#66BB6A",
+    "edmontosaurus": "#8D6E63", "pachycephalosaurus": "#7E57C2",
+    "dilophosaurus": "#26A69A",
+    "baby_trex": "#81C784", "baby_trike": "#A1887F", "baby_stego": "#FFB74D",
+    "baby_brachio": "#4DB6AC", "baby_para": "#FFD54F", "baby_anky": "#BCAAA4",
+}
+
 WATER_SPECIES = {"plesiosaurus", "mosasaurus", "ichthyosaurus", "elasmosaurus"}
 FLY_SPECIES = {"pteranodon", "quetzalcoatlus", "rhamphorhynchus", "dimorphodon"}
 
@@ -996,7 +1045,7 @@ def water_scene(pg, rng):
     sun(pg, rng)
     if rng.random() < 0.8:
         cloud(pg, rng, rng.randint(250, 750), rng.randint(120, 220))
-    pg.fill(f"M 0 {H} L 0 700 Q 256 660 512 700 Q 768 740 {W} 700 L {W} {H} Z")
+    pg.fill(f"M 0 {H} L 0 700 Q 256 660 512 700 Q 768 740 {W} 700 L {W} {H} Z", gc="#64B5F6")
     for wy in (790, 880):
         pg.fixed(open_quad([(80, wy), (180, wy - 30), (280, wy), (380, wy + 25), (480, wy)]), stroke=True, sw=7)
         pg.fixed(open_quad([(560, wy + 20), (660, wy - 12), (760, wy + 20), (860, wy + 45), (940, wy + 20)]), stroke=True, sw=7)
@@ -1016,19 +1065,21 @@ def land_scene(pg, rng, extras=True):
         sun(pg, rng)
     nclouds = rng.randint(0, 2)
     for i in range(nclouds):
-        cloud(pg, rng, 200 + i * 480 + rng.randint(-80, 80), rng.randint(110, 240))
+        cloud(pg, rng, 220 + i * 470 + rng.randint(-60, 60), rng.randint(110, 240))
     ground(pg, rng)
     if extras:
         pick = rng.random()
         if pick < 0.3:
-            volcano(pg, rng, rng.choice([180, 840]), 810)
+            volcano(pg, rng, rng.choice([230, 780]), 810)
         elif pick < 0.6:
-            tree(pg, rng, rng.choice([140, 880]), 830)
+            tree(pg, rng, rng.choice([150, 870]), 830)
 
 
 def accessory(pg, rng, hx, hy, kind):
     if kind == "hat":
-        party_hat(pg, rng, hx, hy - 85)
+        # clamp: hat top (cy - 115) must stay inside the canvas even on
+        # very long-necked species whose head sits near the top edge
+        party_hat(pg, rng, hx, max(hy - 85, 140))
     elif kind == "balloon":
         balloon(pg, rng, min(900, max(120, hx + 230)), max(160, hy - 160))
     elif kind == "flower":
@@ -1069,6 +1120,7 @@ def build_page(idx, cat_key, species_list, rng):
         land_scene(pg, rng)
     if acc == "rainbow":
         rainbow(pg, rng)
+    pg.use(SPECIES_COLOR.get(species, "#66BB6A"))
     hx, hy = SPECIES[species](pg, rng, flip)
     if acc not in ("none", "rainbow"):
         accessory(pg, rng, hx, hy, acc)
@@ -1077,11 +1129,12 @@ def build_page(idx, cat_key, species_list, rng):
     return pg
 
 
-def page_to_svg(pg):
+def page_to_svg(pg, colored=False):
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}">']
     for r in pg.regions:
         if r["kind"] == "fill":
-            parts.append(f'<path d="{r["d"]}" fill="#FFFFFF" stroke="#222222" stroke-width="6"/>')
+            color = r.get("gc", "#FFFFFF") if colored else "#FFFFFF"
+            parts.append(f'<path d="{r["d"]}" fill="{color}" stroke="#222222" stroke-width="6"/>')
         elif r.get("stroke"):
             parts.append(f'<path d="{r["d"]}" fill="none" stroke="{r.get("color", "#222222")}" stroke-width="{r.get("sw", 7)}" stroke-linecap="round"/>')
         else:
@@ -1092,6 +1145,38 @@ def page_to_svg(pg):
 
 PAGES_PER_CAT = 52   # 10 categories x 52 = 520 pages
 FREE_PER_CAT = 11    # 10 x 11 = 110 free pages
+
+
+def validate_bounds(catalog):
+    """Ensure no path geometry is clipped by the 1024x1024 canvas border.
+    Endpoints must stay inside the canvas; bezier control points get slack."""
+    bad = []
+    for p in catalog["pages"]:
+        for r in p["regions"]:
+            toks = r["d"].split()
+            pairs = []
+            i = 0
+            while i < len(toks):
+                t = toks[i]
+                if t in ("M", "L"):
+                    pairs.append((float(toks[i+1]), float(toks[i+2]), False))
+                    i += 3
+                elif t == "Q":
+                    pairs.append((float(toks[i+1]), float(toks[i+2]), True))
+                    pairs.append((float(toks[i+3]), float(toks[i+4]), False))
+                    i += 5
+                elif t == "C":
+                    pairs.append((float(toks[i+1]), float(toks[i+2]), True))
+                    pairs.append((float(toks[i+3]), float(toks[i+4]), True))
+                    pairs.append((float(toks[i+5]), float(toks[i+6]), False))
+                    i += 7
+                else:
+                    i += 1
+            for x, y, ctrl in pairs:
+                lim = 45 if ctrl else 3
+                if x < -lim or x > W + lim or y < -lim or y > H + lim:
+                    bad.append((p["id"], r["id"], round(x), round(y), "ctrl" if ctrl else "end"))
+    return bad
 
 
 def main():
@@ -1119,14 +1204,25 @@ def main():
             if idx < len(species_list or PARTY_POOL) + 1:
                 with open(os.path.join(SVG_OUT, pg.id + ".svg"), "w") as fh:
                     fh.write(page_to_svg(pg))
+                with open(os.path.join(SVG_OUT, pg.id + "_colored.svg"), "w") as fh:
+                    fh.write(page_to_svg(pg, colored=True))
     with open(os.path.join(OUT, "pages.json"), "w") as fh:
         json.dump(catalog, fh, separators=(",", ":"))
     n = len(catalog["pages"])
     ids = set(p["id"] for p in catalog["pages"])
     assert len(ids) == n, "duplicate page ids!"
+    # every fillable region must have a guide color (complete colored sample)
+    missing_gc = [p["id"] for p in catalog["pages"]
+                  for r in p["regions"] if r["kind"] == "fill" and "gc" not in r]
+    assert not missing_gc, f"regions without guide color: {missing_gc[:10]}"
+    bad = validate_bounds(catalog)
+    if bad:
+        for b in bad[:20]:
+            print("BORDER CLIP:", b)
+        raise SystemExit(f"border clipping in {len(bad)} points - fix before shipping")
     size_mb = os.path.getsize(os.path.join(OUT, "pages.json")) / 1e6
     print(f"OK pages={n} free={total_free} categories={len(CATEGORIES)} "
-          f"species={len(SPECIES)} json={size_mb:.2f}MB")
+          f"species={len(SPECIES)} json={size_mb:.2f}MB bounds=0-clip gc=100%")
 
 
 if __name__ == "__main__":

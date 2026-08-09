@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """App icon: cute dino holding a crayon on a rainbow splash background.
-Writes launcher mipmaps into android-overlay + a 512px Amazon listing icon
-+ a 320x180 Fire TV leanback banner."""
+Writes launcher mipmaps into android-overlay + Amazon listing icons.
+(Fire tablets ONLY — no TV banner, the app is tablet-only.)"""
 import math
 import os
 
@@ -118,35 +118,6 @@ def render(size):
     return surf
 
 
-def render_banner():
-    """Fire TV leanback banner: 320x180."""
-    w, h = 320, 180
-    surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
-    cr = cairo.Context(surf)
-    # background
-    g = cairo.LinearGradient(0, 0, 0, h)
-    g.add_color_stop_rgb(0, 1.0, 0.97, 0.88)
-    g.add_color_stop_rgb(1, 1.0, 0.90, 0.75)
-    cr.set_source(g)
-    cr.paint()
-    # mini dino on the left (reuse main draw, scaled+cropped)
-    cr.save()
-    cr.translate(-70, -15)
-    cr.scale(320 / SIZE, 320 / SIZE)
-    draw(cr)
-    cr.restore()
-    # text
-    cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL,
-                        cairo.FONT_WEIGHT_BOLD)
-    cr.set_font_size(26)
-    cr.set_source_rgb(0.15, 0.35, 0.15)
-    cr.move_to(150, 80)
-    cr.show_text("Baby Dino")
-    cr.move_to(150, 112)
-    cr.show_text("Coloring")
-    return surf
-
-
 def main():
     targets = {
         "mipmap-mdpi": 48, "mipmap-hdpi": 72, "mipmap-xhdpi": 96,
@@ -157,15 +128,11 @@ def main():
                                "res", folder)
         os.makedirs(out_dir, exist_ok=True)
         render(size).write_to_png(os.path.join(out_dir, "ic_launcher.png"))
-    banner_dir = os.path.join(ROOT, "android-overlay", "app", "src", "main",
-                              "res", "drawable-xhdpi")
-    os.makedirs(banner_dir, exist_ok=True)
-    render_banner().write_to_png(os.path.join(banner_dir, "banner.png"))
     store_dir = os.path.join(ROOT, "store")
     os.makedirs(store_dir, exist_ok=True)
     render(512).write_to_png(os.path.join(store_dir, "icon_512.png"))
     render(114).write_to_png(os.path.join(store_dir, "icon_114.png"))
-    print("icons + banner written")
+    print("icons written")
 
 
 if __name__ == "__main__":

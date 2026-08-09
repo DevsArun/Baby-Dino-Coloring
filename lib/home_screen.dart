@@ -118,6 +118,57 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
+                      if (!owned)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                            child: Material(
+                              color: const Color(0xFF43A047),
+                              borderRadius: BorderRadius.circular(24),
+                              clipBehavior: Clip.antiAlias,
+                              child: InkWell(
+                                onTap: _openParentArea,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 16),
+                                  child: Row(
+                                    children: [
+                                      const Text('\u{1F996}',
+                                          style: TextStyle(fontSize: 34)),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              S.t('unlockTitle'),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${S.t('unlockAll')} - ${IapStore.instance.price.isEmpty ? '\$3.99' : IapStore.instance.price}',
+                                              style: const TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(Icons.lock_open_rounded,
+                                          color: Colors.white, size: 30),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       SliverPadding(
                         padding: const EdgeInsets.all(16),
                         sliver: SliverGrid(

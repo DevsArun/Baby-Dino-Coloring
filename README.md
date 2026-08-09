@@ -3,11 +3,12 @@
 **Tap, color, roar! Easy coloring for toddlers.**
 
 - Package: `com.itschool.babydinocoloring` · Version: `1.0.1+2`
-- 520 unique dino coloring pages, 10 categories, **104 free**
+- 520 unique dino coloring pages, 10 categories, **110 free**
 - One-time IAP `full_library_unlock` ($3.99) unlocks everything
 - Fully offline · zero permissions · no ads · no analytics · COPPA-friendly
-- **Devices:** ALL Amazon devices eligible — har Fire tablet (Fire OS 5+,
-  minSdk 22) + Fire TV (touchscreen optional, leanback banner included)
+- **Devices:** sirf **Fire TABLETS** — har Fire tablet (Fire OS 5+, minSdk 22).
+  Fire TV OFF (touch-only coloring app; manifest me touchscreen required hai,
+  to TV ko app dikhega hi nahi). Console me sirf Fire tablets select karo.
 - **Languages:** app UI device ki language me khud ba khud —
   English, Deutsch, Français, Español, Italiano, 日本語, Português
   (tier-1 countries: US, CA, UK, DE, FR, ES, IT, JP, BR...)

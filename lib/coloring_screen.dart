@@ -32,8 +32,15 @@ class _ColoringScreenState extends State<ColoringScreen> {
   late final PagePaths _paths;
   late Map<String, int> _fills;
   int _selected = kPalette[10]; // friendly blue to start
+  bool _showGuide = true;
   final List<_FillAction> _undo = [];
   final List<_FillAction> _redo = [];
+
+  /// The colored sample (top) that kids copy onto the blank page (bottom).
+  late final Map<String, int> _guide = {
+    for (final r in widget.page.regions)
+      if (r.isFillable && r.gc != null) r.id: colorFromHex(r.gc!).value,
+  };
 
   @override
   void initState() {
@@ -140,6 +147,54 @@ class _ColoringScreenState extends State<ColoringScreen> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: Row(
+              children: [
+                if (_showGuide) ...[
+                  Container(
+                    width: 84,
+                    height: 84,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                          color: theme.colorScheme.primary, width: 3),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: CustomPaint(
+                      painter: ColoringPainter(
+                          pagePaths: _paths, fills: _guide),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Copy the colors! \u{1F3A8}',
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                ] else
+                  const Spacer(),
+                IconButton(
+                  tooltip: _showGuide ? 'Hide sample' : 'Show sample',
+                  iconSize: 30,
+                  onPressed: () =>
+                      setState(() => _showGuide = !_showGuide),
+                  icon: Icon(_showGuide
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Center(
               child: Padding(

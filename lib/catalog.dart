@@ -9,6 +9,7 @@ class Region {
     required this.d,
     required this.kind,
     this.color,
+    this.gc,
     this.stroke = false,
     this.strokeWidth = 7,
   });
@@ -19,6 +20,7 @@ class Region {
       d: json['d'] as String,
       kind: json['kind'] as String,
       color: json['color'] as String?,
+      gc: json['gc'] as String?,
       stroke: json['stroke'] == true,
       strokeWidth: (json['sw'] as num?)?.toDouble() ?? 7,
     );
@@ -28,6 +30,7 @@ class Region {
   final String d;
   final String kind; // 'fill' | 'fixed'
   final String? color;
+  final String? gc; // guide color for the colored sample kids copy
   final bool stroke;
   final double strokeWidth;
 
