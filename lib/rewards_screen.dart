@@ -10,7 +10,7 @@ class _Tier {
   final String emoji;
 }
 
-const List<_Tier> kTiers = [
+const List<_Tier> _kTiers = [
   _Tier(10, 'Dino Beginner', '\u{1F95A}'),
   _Tier(50, 'Dino Explorer', '\u{1F996}'),
   _Tier(150, 'Dino Artist', '\u{1F3A8}'),
@@ -59,7 +59,7 @@ class RewardsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              for (final tier in kTiers) ...[
+              for (final tier in _kTiers) ...[
                 _TierCard(tier: tier, stars: stars),
                 const SizedBox(height: 10),
               ],
