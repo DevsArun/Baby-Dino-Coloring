@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'home_screen.dart';
 import 'iap_store.dart';
 import 'progress_store.dart';
+import 'sound_store.dart';
+import 'splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class _BabyDinoAppState extends State<BabyDinoApp>
     WidgetsBinding.instance.addObserver(this);
     ProgressStore.instance.ensureLoaded();
     IapStore.instance.init();
+    SoundStore.instance.init();
   }
 
   @override
@@ -61,7 +63,7 @@ class _BabyDinoAppState extends State<BabyDinoApp>
           elevation: 0,
         ),
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -2,10 +2,14 @@
 
 **Tap, color, roar! Easy coloring for toddlers.**
 
-- Package: `com.itschool.babydinocoloring` · Version: `1.0.1+2`
+- Package: `com.itschool.babydinocoloring` · Version: `1.3.0+10`
 - 520 unique dino coloring pages, 10 categories, **110 free**
 - One-time IAP `full_library_unlock` ($3.99) unlocks everything
 - Fully offline · zero permissions · no ads · no analytics · COPPA-friendly
+- **Premium feel:** animated splash + logo, copy-the-colors sample (tap to zoom),
+  confetti celebration, gentle music + SFX (self-made in tools/, royalty-free)
+- **My Gallery:** artwork saved on device; share with app name (parent-gated)
+- **Rewards:** star per finished page + Dino Master badges; pinch-zoom canvas
 - **Devices:** sirf **Fire TABLETS** — har Fire tablet (Fire OS 5+, minSdk 22).
   Fire TV OFF (touch-only coloring app; manifest me touchscreen required hai,
   to TV ko app dikhega hi nahi). Console me sirf Fire tablets select karo.

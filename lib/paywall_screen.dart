@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'iap_store.dart';
+import 'sound_store.dart';
 import 'strings.dart';
 
 /// Grown-ups area: purchase, restore, diagnostics and privacy info.
@@ -85,6 +86,24 @@ class PaywallScreen extends StatelessWidget {
                           ),
                         ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24)),
+                child: ListenableBuilder(
+                  listenable: SoundStore.instance,
+                  builder: (context, _) => SwitchListTile(
+                    secondary: const Icon(Icons.music_note_rounded,
+                        size: 32),
+                    title: const Text('Music',
+                        style: TextStyle(fontWeight: FontWeight.w800)),
+                    subtitle: const Text(
+                        'Gentle background music and sound effects'),
+                    value: SoundStore.instance.musicOn,
+                    onChanged: (v) => SoundStore.instance.setMusic(v),
                   ),
                 ),
               ),

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'catalog.dart';
 import 'category_screen.dart';
+import 'gallery_screen.dart';
 import 'iap_store.dart';
 import 'painter.dart';
 import 'parental_gate.dart';
 import 'paywall_screen.dart';
 import 'progress_store.dart';
+import 'rewards_screen.dart';
+import 'routes.dart';
 import 'strings.dart';
 
 const List<int> kCategoryColors = [
@@ -54,12 +57,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _openParentArea() async {
     final ok = await showParentalGate(context);
     if (ok && mounted) {
-      await Navigator.of(context).push(
-        MaterialPageRoute<void>(builder: (_) => const PaywallScreen()),
-      );
+      await Navigator.of(context).push(smoothRoute(const PaywallScreen()));
       if (mounted) {
         setState(() {});
       }
+    }
+  }
+
+  Future<void> _openGallery() async {
+    await Navigator.of(context).push(smoothRoute(const GalleryScreen()));
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _openRewards() async {
+    await Navigator.of(context).push(smoothRoute(const RewardsScreen()));
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -72,9 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
               child: ListenableBuilder(
-                listenable: IapStore.instance,
+                listenable: Listenable.merge(
+                    [IapStore.instance, ProgressStore.instance]),
                 builder: (context, _) {
                   final owned = IapStore.instance.owned;
+                  final stars = ProgressStore.instance.starCount;
                   return CustomScrollView(
                     slivers: [
                       SliverToBoxAdapter(
@@ -106,6 +123,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
+                              ),
+                              IconButton(
+                                tooltip: 'My stars',
+                                onPressed: _openRewards,
+                                icon: Chip(
+                                  avatar: const Text('\u{2B50}',
+                                      style: TextStyle(fontSize: 16)),
+                                  label: Text('$stars',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w800)),
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: 'My Gallery',
+                                iconSize: 32,
+                                onPressed: _openGallery,
+                                icon: const Icon(Icons.photo_library_rounded),
                               ),
                               IconButton(
                                 tooltip: S.t('forGrownUps'),
@@ -237,9 +272,7 @@ class _CategoryCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => CategoryScreen(categoryId: category.id),
-            ),
+            smoothRoute(CategoryScreen(categoryId: category.id)),
           );
         },
         child: Padding(

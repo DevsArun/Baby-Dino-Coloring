@@ -7,6 +7,7 @@ import 'painter.dart';
 import 'parental_gate.dart';
 import 'paywall_screen.dart';
 import 'progress_store.dart';
+import 'routes.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key, required this.categoryId});
@@ -39,9 +40,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     if (locked) {
       final ok = await showParentalGate(context);
       if (ok && mounted) {
-        await Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => const PaywallScreen()),
-        );
+        await Navigator.of(context).push(smoothRoute(const PaywallScreen()));
       }
       if (mounted) {
         setState(() {});
@@ -49,7 +48,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       return;
     }
     await Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => ColoringScreen(page: page)),
+      smoothRoute(ColoringScreen(page: page)),
     );
     if (mounted) {
       setState(() {});

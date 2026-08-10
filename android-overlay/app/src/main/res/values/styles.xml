@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoActionBar">
+        <!-- Cream splash background + centered dino logo; removed when the
+             Flutter engine draws its first frame (then our animated
+             SplashScreen takes over seamlessly). -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied as soon as the process has started. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoActionBar">
+        <item name="android:windowBackground">@color/launch_bg</item>
+    </style>
+</resources>
