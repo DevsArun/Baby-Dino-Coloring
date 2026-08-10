@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Theme applied to the Android Window while the process is starting -->
-    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoActionBar">
-        <!-- Cream splash background + centered dino logo; removed when the
-             Flutter engine draws its first frame (then our animated
-             SplashScreen takes over seamlessly). -->
+    <!-- Theme applied to the Android Window while the process is starting.
+         IMPORTANT: parent must be a Theme.Material.* theme — the legacy
+         pre-Material theme family was removed from the newest android.jar
+         and caused AAPT resource link errors on the latest Flutter/AGP. -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <!-- Cream splash + centered dino logo; removed when the Flutter
+             engine draws its first frame (then our animated SplashScreen
+             takes over seamlessly). -->
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
     <!-- Theme applied as soon as the process has started. -->
-    <style name="NormalTheme" parent="@android:style/Theme.Light.NoActionBar">
+    <style name="NormalTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/launch_bg</item>
     </style>
 </resources>
